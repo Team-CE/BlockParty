@@ -18,16 +18,18 @@ var _reached: bool = true
 var _on_ground: bool
 
 # Just setter for target_pos
-func move(pos: Vector2) -> void:
-  $Sprite.flip_h = (pos.x < position.x)
+func move(pos: Vector2, set_state = STATE.WALK) -> void:
+  if pos.x != position.x:
+    $Sprite.flip_h = (pos.x < position.x)
   # If way is blocked then abort movement
   if !can_move(pos):
-    state = STATE.IDLE
+    if state != STATE.CLIMB:
+      state = STATE.IDLE
     return
   
   target_pos = pos
   _reached = false
-  state = STATE.WALK
+  state = set_state
 
 func can_move(pos: Vector2) -> bool:
   return !(Global.get_tile(pos) in SOLID)
@@ -36,19 +38,37 @@ func check_ground() -> void:
   var tile: int = Global.get_tile(position + Vector2.DOWN * 16)
   _on_ground = tile in SOLID or tile in LADDER or Global.get_tile(position + Vector2.UP * 16) in LADDER
 
-func can_climb(down:bool) -> bool:
-  # If tile you in is ladder and up tile is ladde or air you can move up and down the same
-  var tile: int = Global.get_tile(position + Vector2.UP * 48) if !down else Global.get_tile(position + Vector2.DOWN * 16)
-  return (tile in LADDER or tile == -1) and Global.get_tile(position + Vector2.UP * 16) in LADDER
+func can_climb(down: bool) -> bool:
+  # If tile you're in and the upper tile is a ladder or air you can move
+  var tile: int = Global.get_tile(position + Vector2.UP * 16) if !down else Global.get_tile(position + Vector2.DOWN * 16)
+  return (
+    (tile in LADDER or tile == -1) and
+    (
+      (
+        !down and
+        !(Global.get_tile(position + Vector2.UP * 48) in SOLID) and
+        Global.get_tile(position + Vector2.UP * 16) in LADDER
+      ) or
+      (
+        down and
+        (
+          (Global.get_tile(position + Vector2.DOWN * 16) in LADDER) or
+          (Global.get_tile(position + Vector2.UP * 16) in LADDER)
+        )
+      )
+    )
+  )
 
-func _process(_delta):
+func _process(delta):
   check_ground()
   if !_reached:
-    position = position.move_toward(target_pos,speed)
+    position = position.move_toward(target_pos, speed * Global.get_delta(delta))
     # If already reached
     _reached = position == target_pos
     if _reached:
-      # If input still pressed countinue playing animation
+      # Make sure that all animations update properly
+      animation()
+      # If input is still pressed countinue playing current animation
       if !_on_ground:
         move(position + Vector2.DOWN * 32)
         state = STATE.FALL
@@ -67,31 +87,38 @@ func _process(_delta):
 func check_inputs() -> bool:
   # Getting a movement direction
   var dir_x: float = Input.get_axis('m_left','m_right')
-  var dir_y: float = Input.get_axis('m_up',  'm_down' )
+  var dir_y: float = Input.get_axis('m_up', 'm_down')
   
   if dir_y != 0:
-    if can_climb(dir_y < 0):
-      move(position + Vector2(0,dir_y * 32))
-      state = STATE.CLIMB
+    if can_climb(dir_y > 0):
+      move(position + Vector2(0, dir_y * 32), STATE.CLIMB)
       return true
   if dir_x != 0:
     # Then move a player
-    move(position + Vector2(dir_x * 32,0))
+    move(position + Vector2(dir_x * 32, 0))
     return true
   return false
 
 func animation() -> void:
-  if state == STATE.IDLE and $Sprite.frame == 2:
-    $Sprite.playing = false
-    $Sprite.animation = 'default'
+  if state == STATE.IDLE:
+    if $Sprite.frame != 2 and !$Sprite.playing:
+      $Sprite.frame = 2
+    if $Sprite.frame == 2 and $Sprite.playing:
+      $Sprite.playing = false
+      $Sprite.animation = 'default'
   elif state != STATE.IDLE:
     if state == STATE.FALL:
       $Sprite.animation = 'default'
       $Sprite.playing = false
       $Sprite.frame = 2
-    if state == STATE.CLIMB and $Sprite.animation != 'climb':
+    elif state == STATE.CLIMB:
+      if !(Global.get_tile(position + Vector2.UP * 2) in LADDER):
+        $Sprite.animation = 'default'
+        return
       $Sprite.animation = 'climb'
       $Sprite.playing = !_reached
+    else:
+      $Sprite.playing = true
   
   
   
