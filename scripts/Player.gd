@@ -112,13 +112,13 @@ func animation() -> void:
       $Sprite.playing = false
       $Sprite.frame = 2
     elif state == STATE.CLIMB:
-      if !(Global.get_tile(position + Vector2.UP * 2) in LADDER):
-        $Sprite.animation = 'default'
-        return
       $Sprite.animation = 'climb'
       $Sprite.playing = !_reached
     else:
       $Sprite.playing = true
+    
+  if !(Global.get_tile(position + Vector2.UP * 2) in LADDER) and $Sprite.animation == 'climb':
+    $Sprite.animation = 'default'
   
   
   
