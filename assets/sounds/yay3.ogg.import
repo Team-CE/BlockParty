@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/yay3.ogg-99938fe7261114186d595ace065fc458.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/yay3.ogg"
+dest_files=[ "res://.import/yay3.ogg-99938fe7261114186d595ace065fc458.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

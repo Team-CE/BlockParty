@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/walk.png-7402dcd5ccca6093c87dd9f9d44c43a1.stex"
+path="res://.import/dbg.png-40632203977e625e19647c5756cacae2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/mario/walk.png"
-dest_files=[ "res://.import/walk.png-7402dcd5ccca6093c87dd9f9d44c43a1.stex" ]
+source_file="res://assets/dbg.png"
+dest_files=[ "res://.import/dbg.png-40632203977e625e19647c5756cacae2.stex" ]
 
 [params]
 
