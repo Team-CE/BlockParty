@@ -1,0 +1,77 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://objects/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://objects/block.tscn" type="PackedScene" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 224, 16 )
+
+[node name="Level" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 576, 464 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 800, 304 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 384, 160 )
+shape = SubResource( 1 )
+
+[node name="Icon" type="Sprite" parent="StaticBody2D"]
+position = Vector2( 384, 160 )
+scale = Vector2( 7, 0.5 )
+texture = ExtResource( 3 )
+
+[node name="Icon2" type="Sprite" parent="StaticBody2D"]
+position = Vector2( 800, 304 )
+scale = Vector2( 7, 0.5 )
+texture = ExtResource( 3 )
+
+[node name="Icon3" type="Sprite" parent="StaticBody2D"]
+position = Vector2( 576, 464 )
+scale = Vector2( 7, 0.5 )
+texture = ExtResource( 3 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 496, 144 )
+
+[node name="Block" parent="." instance=ExtResource( 2 )]
+position = Vector2( 432, 144 )
+
+[node name="Block2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 368, 448 )
+
+[node name="Block4" parent="." instance=ExtResource( 2 )]
+position = Vector2( 464, 448 )
+
+[node name="Block5" parent="." instance=ExtResource( 2 )]
+position = Vector2( 464, 416 )
+
+[node name="Block6" parent="." instance=ExtResource( 2 )]
+position = Vector2( 464, 384 )
+
+[node name="Block8" parent="." instance=ExtResource( 2 )]
+position = Vector2( 1008, 288 )
+
+[node name="Block9" parent="." instance=ExtResource( 2 )]
+position = Vector2( 1008, 256 )
+
+[node name="Block10" parent="." instance=ExtResource( 2 )]
+position = Vector2( 1008, 224 )
+
+[node name="Block11" parent="." instance=ExtResource( 2 )]
+position = Vector2( 1008, 192 )
+
+[node name="Block7" parent="." instance=ExtResource( 2 )]
+position = Vector2( 624, 448 )
+
+[node name="Block3" parent="." instance=ExtResource( 2 )]
+position = Vector2( 784, 448 )
