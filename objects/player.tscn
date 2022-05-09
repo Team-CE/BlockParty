@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/mario/walk.png" type="Texture" id=2]
@@ -37,6 +37,12 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 2.5, 15 )
+
+[sub_resource type="RectangleShape2D" id=14]
+extents = Vector2( 13, 2 )
+
 [node name="Player" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -48,3 +54,21 @@ offset = Vector2( 0, -28 )
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 smoothing_enabled = true
+
+[node name="Left_side" type="Area2D" parent="."]
+position = Vector2( -16, -16 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Left_side"]
+shape = SubResource( 13 )
+
+[node name="Right_side" type="Area2D" parent="."]
+position = Vector2( 16, -16 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Right_side"]
+shape = SubResource( 13 )
+
+[node name="Bottom_side" type="Area2D" parent="."]
+position = Vector2( 0, 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bottom_side"]
+shape = SubResource( 14 )

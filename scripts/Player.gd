@@ -8,14 +8,17 @@ enum STATE {
   CLIMB
 }
 
+
 const SOLID  = [0]
 const LADDER = [1]
 
 var target_pos: Vector2
 var speed: float = 2
 var state: int = STATE.IDLE
+
 var _reached: bool = true
 var _on_ground: bool
+var _block_time: float
 
 # Just setter for target_pos
 func move(pos: Vector2, set_state = STATE.WALK) -> void:
@@ -27,16 +30,43 @@ func move(pos: Vector2, set_state = STATE.WALK) -> void:
       state = STATE.IDLE
     return
   
+  for i in $Right_side.get_overlapping_areas():
+    if i is Interactive:
+      if pos.x > position.x:
+        i.move(Vector2.RIGHT)
+        _block_time = 20
+        return
+  for i in $Left_side.get_overlapping_areas():
+    if i is Interactive:
+      if pos.x > position.x:
+        i.move(Vector2.LEFT)
+        _block_time = 20
+        return
+  
+  
+  
   target_pos = pos
   _reached = false
   state = set_state
 
+# MOVE SYSTEM AND PULL SYSTEM HERE
 func can_move(pos: Vector2) -> bool:
-  return !(Global.get_tile(pos) in SOLID)
+  var result: bool
+  if pos.x > position.x:
+    result = $Right_side.get_overlapping_areas().size() <= 0
+  elif pos.x < position.x:
+    result = $Left_side.get_overlapping_areas().size() <= 0
+  
+  return !(Global.get_tile(pos) in SOLID) or result
 
 func check_ground() -> void:
   var tile: int = Global.get_tile(position + Vector2.DOWN * 16)
-  _on_ground = tile in SOLID or tile in LADDER or Global.get_tile(position + Vector2.UP * 16) in LADDER
+  _on_ground = (
+    tile in SOLID or
+    tile in LADDER or
+    Global.get_tile(position + Vector2.UP * 16) in LADDER or
+    $Bottom_side.get_overlapping_areas() > 0
+  )
 
 func can_climb(down: bool) -> bool:
   # If tile you're in and the upper tile is a ladder or air you can move
@@ -61,7 +91,13 @@ func can_climb(down: bool) -> bool:
 
 func _process(delta):
   check_ground()
+  
+  if _block_time > 0:
+    _block_time -= Global.get_delta(delta)
+  
   if !_reached:
+    if _block_time > 0:
+      return
     position = position.move_toward(target_pos, speed * Global.get_delta(delta))
     # If already reached
     _reached = position == target_pos
@@ -119,6 +155,4 @@ func animation() -> void:
     
   if !(Global.get_tile(position + Vector2.UP * 2) in LADDER) and $Sprite.animation == 'climb':
     $Sprite.animation = 'default'
-  
-  
-  
+
