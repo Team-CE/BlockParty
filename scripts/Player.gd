@@ -138,6 +138,7 @@ func _process(delta):
   
   if _fall_counter == 4:
     Global.play_sound(Global.SOUND_TYPE.YAY)
+    _fall_counter = 5
   # Animations of player
   animation()
 

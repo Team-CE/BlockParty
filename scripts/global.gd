@@ -5,7 +5,9 @@ const LADDER = [1]
 
 enum SOUND_TYPE {
   YAY,
-  DEATH
+  DEATH,
+  BLOCK_MOVE,
+  BLOCK_FALL
 }
 
 const SOUNDS_DIR = 'res://assets/sounds/'
@@ -16,6 +18,9 @@ var sound_player: AudioStreamPlayer = AudioStreamPlayer.new()
 var mario_dead: bool
 var target_camera_zoom = Vector2(1, 1)
 
+var player: Node2D
+var camera: Camera2D
+
 var _dead_counter: float
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -24,10 +29,15 @@ func _init():
   rng.randomize()
   sounds[SOUND_TYPE.DEATH] = [load(SOUNDS_DIR+'death1.ogg'),load(SOUNDS_DIR+'death2.ogg'),load(SOUNDS_DIR+'death3.ogg')]
   sounds[SOUND_TYPE.YAY]  = [load(SOUNDS_DIR+'yay1.ogg'),load(SOUNDS_DIR+'yay2.ogg'),load(SOUNDS_DIR+'yay3.ogg')]
+  sounds[SOUND_TYPE.BLOCK_MOVE]  = [load(SOUNDS_DIR+'move1.ogg'),load(SOUNDS_DIR+'move2.ogg'),load(SOUNDS_DIR+'move3.ogg')]
+  sounds[SOUND_TYPE.BLOCK_FALL]  = [load(SOUNDS_DIR+'block_fall1.ogg'),load(SOUNDS_DIR+'block_fall2.ogg')]
 
 func _ready():
   sound_player.owner = self
   add_child(sound_player)
+  
+  player = get_tree().current_scene.get_node('Player')
+  camera = player.get_node('Camera2D')
 
 static func get_delta(delta: float) -> float:       # Delta by 60 FPS
   return 60 / (1 / (delta if not delta == 0 else 0.0001))
@@ -47,6 +57,11 @@ func play_sound(sound: int) -> void:
   sound_player.stream = sounds[sound][rng.randi_range(0,sounds[sound].size()-1)]
   sound_player.stream.loop = false
   sound_player.play()
+
+func play_sound_at(sound: int, player: AudioStreamPlayer2D) -> void:
+  player.stream = sounds[sound][rng.randi_range(0,sounds[sound].size()-1)]
+  player.stream.loop = false
+  player.play()
 
 func kill_mario() -> void:
   if mario_dead: return
