@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/Bomb.png" type="Texture" id=1]
+[ext_resource path="res://scripts/Bomb.gd" type="Script" id=2]
+[ext_resource path="res://assets/sounds/yay1.ogg" type="AudioStream" id=3]
+[ext_resource path="res://tres/anims/explosion.tres" type="SpriteFrames" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 15, 48 )
+
+[node name="Bomb" type="Area2D"]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -16 )
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -16 )
+shape = SubResource( 1 )
+disabled = true
+
+[node name="Collision2" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -16 )
+rotation = 1.5708
+shape = SubResource( 1 )
+disabled = true
+
+[node name="Explosion" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+
+[node name="Explode" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 0, -16 )
+frames = ExtResource( 4 )
+
+[connection signal="area_entered" from="." to="." method="_on_Bomb_area_entered"]

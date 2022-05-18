@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/Block.gd" type="Script" id=1]
+[ext_resource path="res://assets/blocks.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 16 )
+
+[node name="Ice" type="Area2D" groups=["Box"]]
+collision_layer = 7
+collision_mask = 7
+script = ExtResource( 1 )
+can_explode = true
+
+[node name="Dbg" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+offset = Vector2( 0, -16 )
+region_enabled = true
+region_rect = Rect2( 64, 0, 32, 32 )
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -16 )
+shape = SubResource( 1 )
+
+[node name="Move" type="AudioStreamPlayer2D" parent="."]

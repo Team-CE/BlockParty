@@ -1,0 +1,8 @@
+*Added Ice, Metal blocks
+*Added a bomb (Sound of Yay used for explosion sound)
+*Added feature to place a blocks and ladders
+*Splitted a Global sound player to separate sound player to avoid spaghetti
+*Added a new Globals scripts: SoundPlayer, Placements (for avoiding spaghetti in code)
+
+-Need to fix temporary UI
+-Need a sounds for explosion

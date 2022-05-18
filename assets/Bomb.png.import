@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Walk.png-5744c7e800d1a8516a084a5f5a0ec19c.stex"
+path="res://.import/Bomb.png-7215c80d3f197e27080bb65321e75e7f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/mario/Walk.png"
-dest_files=[ "res://.import/Walk.png-5744c7e800d1a8516a084a5f5a0ec19c.stex" ]
+source_file="res://assets/Bomb.png"
+dest_files=[ "res://.import/Bomb.png-7215c80d3f197e27080bb65321e75e7f.stex" ]
 
 [params]
 

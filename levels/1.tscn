@@ -5,8 +5,8 @@
 [ext_resource path="res://assets/dbg.png" type="Texture" id=3]
 [ext_resource path="res://scripts/Level.gd" type="Script" id=4]
 [ext_resource path="res://objects/block.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scripts/Camera.gd" type="Script" id=6]
 [ext_resource path="res://assets/Grass.png" type="Texture" id=7]
+[ext_resource path="res://objects/ice.tscn" type="PackedScene" id=8]
 
 [sub_resource type="TileSet" id=1]
 0/name = "dbg.png 0"
@@ -76,17 +76,6 @@ tile_data = PoolIntArray( 524297, 1, 0, 524298, 2, 0, 524299, 2, 1, 524300, 2, 1
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 432, 256 )
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
-current = true
-limit_top = 64
-limit_bottom = 704
-smoothing_enabled = true
-editor_draw_limits = true
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_lock_": true
-}
-
 [node name="Block" parent="." instance=ExtResource( 5 )]
 position = Vector2( 656, 384 )
 
@@ -95,3 +84,6 @@ position = Vector2( 496, 256 )
 
 [node name="Block3" parent="." instance=ExtResource( 5 )]
 position = Vector2( 336, 480 )
+
+[node name="Ice" parent="." instance=ExtResource( 8 )]
+position = Vector2( 592, 288 )

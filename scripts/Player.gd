@@ -22,6 +22,8 @@ var fly_velocity: Vector2
 func _ready():
   Global.mario_dead = false
   Global._dead_counter = 0
+  Global.player_UI = $UI
+  Global.camera = $Camera2D
   fly_velocity = Vector2(Global.rng.randf_range(-3, 3), Global.rng.randf_range(-5, -4))
 
 # Just setter for target_pos
@@ -102,7 +104,6 @@ func _process(delta):
   if Global.mario_dead:
     _process_dead(delta)
     return
-    
   check_ground()
   
   if position.y > $Camera2D.limit_bottom + 16:
@@ -137,7 +138,7 @@ func _process(delta):
       check_inputs()
   
   if _fall_counter == 4:
-    Global.play_sound(Global.SOUND_TYPE.YAY)
+    SoundPlayer.play_sound(SoundPlayer.SOUND_TYPE.YAY)
     _fall_counter = 5
   # Animations of player
   animation()
@@ -146,6 +147,9 @@ func check_inputs() -> bool:
   # Getting a movement direction
   var dir_x: float = Input.get_axis('m_left','m_right')
   var dir_y: float = Input.get_axis('m_up', 'm_down')
+  
+  if Input.is_action_just_pressed("m_place"):
+    Placements.place(position)
   
   if dir_y != 0:
     if can_climb(dir_y > 0):
